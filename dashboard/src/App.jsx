@@ -17,6 +17,7 @@ function App() {
         <Route path="/users" element={<UsersPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
         <Route path="/github" element={<Finder />} />
+        <Route path="*" element={<NotFound />} /> {/* Handle 404 */}
       </Routes>
     </Router>
   );
