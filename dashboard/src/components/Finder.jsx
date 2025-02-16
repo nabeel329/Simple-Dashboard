@@ -1,3 +1,4 @@
+// components/Finder.jsx
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box, CircularProgress } from '@mui/material';
 

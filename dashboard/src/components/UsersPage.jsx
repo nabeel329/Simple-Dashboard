@@ -1,45 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { List, ListItem, Typography, Container, CircularProgress } from '@mui/material';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardMedia, Typography, Grid, Container } from "@mui/material";
+import UserData from "./UserData";
 
 function UsersPage() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <Container style={{ textAlign: 'center', marginTop: '20px' }}>
-        <CircularProgress />
-      </Container>
-    );
-  }
-
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
+    <Container sx={{ py: 4, maxWidth: "100%!important" }}>
+      <Typography variant="h4" textAlign="center" gutterBottom>
         Users
       </Typography>
-      <List>
-        {users.map((user) => (
-          <ListItem
-            button
-            key={user.id}
-            onClick={() => navigate(`/users/${user.id}`)}
-          >
-            <Typography variant="body1">{user.name}</Typography>
-          </ListItem>
+      <Grid container spacing={3} sx={{ margin: 0, width: "100%!important" }}>
+        {UserData.map((user) => (
+          <Grid item key={user.id} xs={12} sm={6} md={4} lg={3}>
+            <Card sx={{ height: "100%", display: "flex", flexDirection: "column", boxShadow: 3, transition: "0.3s", "&:hover": { transform: "scale(1.05)" } }}>
+              <CardMedia component="img" height="200" image={user.imgSrc} alt={user.title} sx={{ objectFit: "cover", padding: "10px" }} />
+              <CardContent>
+                <Typography variant="h6" component="div" sx={{ fontWeight: "bold", fontSize: "1rem", height: "50px", overflow: "hidden" }}>
+                  {user.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ height: "40px", overflow: "hidden", mt: 1 }}>
+                  {user.desc}
+                </Typography>
+                <Link to={`/users/${user.id}`} style={{ textDecoration: "none", color: "#007bff", fontWeight: "bold", display: "block", marginTop: "10px" }}>
+                  View Details
+                </Link>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </List>
+      </Grid>
     </Container>
   );
 }

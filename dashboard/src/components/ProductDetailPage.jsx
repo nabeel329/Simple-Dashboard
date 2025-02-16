@@ -1,42 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Typography, Container, CircularProgress } from '@mui/material';
+import React from "react";
+import { useParams } from "react-router-dom";
+import { Data } from "./Data"; // Importing the static data
 
-function ProductDetailPage() {
+const ProductDetailPage = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const product = Data.find((item) => item.id === parseInt(id));
 
-  useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProduct(data);
-        setLoading(false);
-      });
-  }, [id]);
-
-  if (loading) {
-    return (
-      <Container style={{ textAlign: 'center', marginTop: '20px' }}>
-        <CircularProgress />
-      </Container>
-    );
+  if (!product) {
+    return <h2>Product not found</h2>;
   }
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        {product.title}
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {product.description}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        Price: ${product.price}
-      </Typography>
-    </Container>
+    <div style={{ padding: "20px" }}>
+      <h1>{product.title}</h1>
+      <img src={product.image} alt={product.title} width="200" />
+      <p>{product.description}</p>
+      <p>Category: {product.category}</p>
+      <p>Price: ${product.price}</p>
+      <p>Rating: {product.rating.rate} ({product.rating.count} reviews)</p>
+    </div>
   );
-}
+};
 
 export default ProductDetailPage;

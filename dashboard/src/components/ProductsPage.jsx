@@ -1,47 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { List, ListItem, Typography, Container, CircularProgress } from '@mui/material';
+import React from "react";
+import { Data } from "./Data"; // Importing the static data
+import { Link } from "react-router-dom";
 
-function ProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <Container style={{ textAlign: 'center', marginTop: '20px' }}>
-        <CircularProgress />
-      </Container>
-    );
-  }
-
+const ProductsPage = () => {
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Products
-      </Typography>
-      <List>
-        {products.map((product) => (
-          <ListItem
-            button
-            key={product.id}
-            onClick={() => navigate(`/products/${product.id}`)}
-          >
-            <Typography variant="body1">{product.title}</Typography>
-          </ListItem>
+    <div>
+      <h1>All Products</h1>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
+        {Data.map((product) => (
+          <div key={product.id} style={{ border: "1px solid #ddd", padding: "10px" }}>
+            <img src={product.image} alt={product.title} width="150" />
+            <h3>{product.title}</h3>
+            <p>Price: ${product.price}</p>
+            <Link to={`/product/${product.id}`}>View Details</Link>
+          </div>
         ))}
-      </List>
-    </Container>
+      </div>
+    </div>
   );
-}
+};
 
 export default ProductsPage;
